@@ -1,11 +1,13 @@
 package yujin.yujinspring.repository;
 
 import org.junit.jupiter.api.AfterEach;
+import org.springframework.stereotype.Repository;
 import yujin.yujinspring.domain.Member;
 
 import java.util.*;
 
 // MemberRepository interface의 구현체
+//@Repository
 public class MemoryMemberRepository implements MemberRepository{
 
     private static Map<Long, Member> store = new HashMap<>();

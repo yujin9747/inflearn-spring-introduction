@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <div class="container">
+    <div>
+      <table>
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>이름</th> </tr>
+        </thead>
+        <tbody>
+        <!--members attribute로 받은 리스트에서 각각을 member로 꺼내서 보여주는 코드-->
+        <tr th:each="member : ${members}">
+          <td th:text="${member.id}"></td>
+          <td th:text="${member.name}"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
