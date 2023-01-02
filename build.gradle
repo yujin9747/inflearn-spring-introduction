@@ -17,6 +17,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// db
+	// implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // jdbc도 포함. jpa를 사용할거면 이렇게 바꾸기.
+	runtimeOnly 'com.h2database:h2'
 }
 
 tasks.named('test') {

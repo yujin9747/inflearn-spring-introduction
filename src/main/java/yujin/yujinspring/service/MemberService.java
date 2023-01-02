@@ -2,6 +2,7 @@ package yujin.yujinspring.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yujin.yujinspring.domain.Member;
 import yujin.yujinspring.repository.MemberRepository;
 import yujin.yujinspring.repository.MemoryMemberRepository;
@@ -16,6 +17,7 @@ import java.util.Optional;
 * command+shift+t 를 통해 create new test 를 할 수 있음.
 * */
 //@Service -> 자동으로 컴포넌트 스캔하는 방법 사용할 때
+@Transactional // jpa 사용해서 db 연동할 때 추가함. jpa는 모든 데이타가 변경이 될 때 transaction 안에서 실행이 되어야 함.
 public class MemberService {
 
     /*
@@ -44,10 +46,24 @@ public class MemberService {
     /*회원 가입*/
     public Long join(Member member) {
 
-        validateDuplicateMember(member); // 중복 회원 검증
+        /*회원 가입 시간 추적 코드 추가함 --> 아래와 같은 코드를 10000개가 넘는 메소드에 넣으려면 ?  비효율적.
+        * 따라서 AOP 방식이 필요함. -> "공통관심사항"에 AOP 적용!
+        * 공통관심사항  vs  핵심관심사 분리
+        * */
 
-        memberRepository.save(member);  // 추가
-        return member.getId();
+        long start  = System.currentTimeMillis();
+
+        try {
+            validateDuplicateMember(member); // 중복 회원 검증
+            memberRepository.save(member);  // 추가
+            return member.getId();
+        } finally {
+            // logic이 끝난 후의 시간을 찍기 위해 finally 사용
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            System.out.println("join = " + timeMs + "ms");
+        }
+
     }
 
     private void validateDuplicateMember(Member member) {
